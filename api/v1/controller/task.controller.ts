@@ -74,7 +74,7 @@ export const detail = async (req: Request, res: Response) => {
 }
 
 // [PATCH] /api/v1/tasks/change-status/:id
-export const changeStatus = async (req, res) => {
+export const changeStatus = async (req: Request, res: Response) => {
     try{
         type StatusType = "initial" | "doing" | "finish" | "pending" | "notFinish";
         
@@ -103,7 +103,7 @@ export const changeStatus = async (req, res) => {
 };
 
 // [PATCH] /api/v1/tasks/change-multi
-export const changeMulti = async (req, res) => {
+export const changeMulti = async (req: Request, res: Response) => {
     try{
         const ids: string[] = req.body.ids;
         const key: string = req.body.key;
@@ -139,6 +139,25 @@ export const changeMulti = async (req, res) => {
         res.json({
             code: 400,
             message: "Không tồn tại!"
+        });
+    }
+};
+
+// [POST] /api/v1/tasks/create
+export const create = async (req: Request, res: Response) => {
+    try{
+        const task = new Task(req.body);
+        const data = await task.save();
+        res.json({
+            code: 200,
+            message: "Tạo thành công!",
+            data: data
+        });
+    }
+    catch (error) {
+        res.json({
+            code: 400,
+            message: "Lỗi!"
         });
     }
 };
