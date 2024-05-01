@@ -1,6 +1,11 @@
-module.exports = (query) => {
-	let objectSearch = {
-		keyword : "",
+interface objectSearch {
+	keyword: string,
+	regex?: RegExp
+}
+
+export const searchHelper = (query): objectSearch => {
+	let objectSearch: objectSearch = {
+		keyword : ""
 	}
 
 	if(query.keyword) {
