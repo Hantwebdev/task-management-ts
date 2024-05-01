@@ -1,26 +1,11 @@
-import { Request, Response, Router } from "express";
-import Task from "../../../models/task.model";
+import { Router } from "express";
+
+import * as controller from "../controller/task.controller";
 
 const router: Router = Router();
 
-router.get('/', async (req: Request, res: Response) => {
-    const tasks = await Task.find({
-        deleted: false
-    });
+router.get('/', controller.index);
 
-    res.json(tasks);
-});
+router.get('/detail/:id', controller.detail);
 
-router.get('/detail/:id', async (req: Request, res: Response) => {
-    const id: string = req.params.id;
-
-    const task = await Task.findOne({
-        _id: id,
-        deleted: false
-    });
-
-    res.json(task);
-})
-
-const taskRoutes: Router = router;
-export default taskRoutes;
+export const taskRoutes: Router = router;
