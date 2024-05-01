@@ -3,6 +3,7 @@ import Task from "../models/task.model";
 import { paginationHelper } from "../../../helpers/pagination";
 import { searchHelper } from "../../../helpers/search";
 
+// [GET] /api/v1/tasks
 export const index = async (req: Request, res: Response) => {
     // Find
     interface Find {
@@ -60,6 +61,7 @@ export const index = async (req: Request, res: Response) => {
     });
 }
 
+// [GET] /api/v1/tasks/detail/:id
 export const detail = async (req: Request, res: Response) => {
     const id: string = req.params.id;
 
@@ -70,3 +72,32 @@ export const detail = async (req: Request, res: Response) => {
 
     res.json(task);
 }
+
+// [PATCH] /api/v1/tasks/change-status/:id
+export const changeStatus = async (req, res) => {
+    try{
+        type StatusType = "initial" | "doing" | "finish" | "pending" | "notFinish";
+        
+        const id: string = req.params.id;
+        const status: StatusType = req.body.status;
+    
+        await Task.updateOne(
+            {
+                _id: id
+            }, 
+            {
+                status: status
+            }
+        );
+    
+        res.json({
+            code: 200,
+            message: "Cập nhật trạng thái thành công!"
+        });
+    } catch (error) {
+        res.json({
+            code: 400,
+            message: "Cập nhật trạng thái không thành công!"
+        });
+    }
+};
